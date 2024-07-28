@@ -17,7 +17,21 @@ GPUS_PER_NODE = 8
 
 SETUP_RETRY_COUNT = 3
 
+_device = None
 
+def device_init(device_str=None):
+    """
+    Initialize the device to use for torch.distributed.
+    If device_str is provided, it sets the global device.
+    """
+    global _device
+    if device_str:
+        _device = th.device(device_str)
+    else:
+        _device = None
+    
+    print(f"Get device = {dev()}")
+    
 def setup_dist():
     """
     Setup a distributed process group.
@@ -45,6 +59,10 @@ def dev():
     """
     Get the device to use for torch.distributed.
     """
+    global _device
+    if _device is not None:
+        return _device
+    
     if th.cuda.is_available():
         return th.device(f"cuda:{MPI.COMM_WORLD.Get_rank() % GPUS_PER_NODE}")
     return th.device("cpu")

@@ -439,7 +439,7 @@ def mpi_weighted_mean(comm, local_name2valcount):
         return {}
 
 
-def configure(dir=None, format_strs=None, comm=None, log_suffix=""):
+def configure(dir=None, format_strs=None, comm=None, log_suffix="", abs_log_path=None):
     """
     If comm is provided, average all numerical stats across that comm
     """
@@ -447,13 +447,13 @@ def configure(dir=None, format_strs=None, comm=None, log_suffix=""):
         dir = os.getenv("OPENAI_LOGDIR")
     if dir is None:
         dir = osp.join(
-            tempfile.gettempdir(),
+            tempfile.gettempdir() if abs_log_path == None else abs_log_path,
             datetime.datetime.now().strftime("openai-%Y-%m-%d-%H-%M-%S-%f"),
         )
     assert isinstance(dir, str)
-    dir = os.path.expanduser(dir)
+    dir = os.path.expanduser(dir) # 将包含波浪号 (~) 的路径扩展为用户主目录的完整路径
     os.makedirs(os.path.expanduser(dir), exist_ok=True)
-
+    print(f"Logs will saved in : {dir}")
     rank = get_rank_without_mpi_import()
     if rank > 0:
         log_suffix = log_suffix + "-rank%03i" % rank

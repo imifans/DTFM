@@ -18,10 +18,10 @@ from improved_diffusion.train_util import TrainLoop
 
 def main():
     args = create_argparser().parse_args()
-
+    dist_util.device_init("cuda:1")  # 初始化设备为 cuda:1
     dist_util.setup_dist()
-    logger.configure()
-
+    logger.configure(abs_log_path = "/home/2021/hexin/XJ2/Log")
+    logger.log("args: %s", vars(args))
     logger.log("creating model and diffusion...")
     model, diffusion = create_model_and_diffusion(
         **args_to_dict(args, model_and_diffusion_defaults().keys())
@@ -68,7 +68,7 @@ def create_argparser():
         microbatch=-1,  # -1 disables microbatches
         ema_rate="0.9999",  # comma-separated list of EMA values
         log_interval=10,
-        save_interval=10000,
+        save_interval=5000,
         resume_checkpoint="",
         use_fp16=False,
         fp16_scale_growth=1e-3,

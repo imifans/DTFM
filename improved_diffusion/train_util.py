@@ -8,7 +8,7 @@ import torch as th
 import torch.distributed as dist
 from torch.nn.parallel.distributed import DistributedDataParallel as DDP
 from torch.optim import AdamW
-
+from datetime import datetime
 from . import dist_util, logger
 from .fp16_util import (
     make_master_params,
@@ -167,6 +167,8 @@ class TrainLoop:
             self.run_step(batch, cond)
             if self.step % self.log_interval == 0:
                 logger.dumpkvs()
+                current_time = datetime.now()
+                logger.log(current_time)
             if self.step % self.save_interval == 0:
                 self.save()
                 # Run for a finite amount of time in integration tests.
