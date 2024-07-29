@@ -22,7 +22,7 @@ from improved_diffusion.script_util import (
 
 def main():
     args = create_argparser().parse_args()
-
+    dist_util.device_init("cuda:1")  # 初始化设备为 cuda:1
     dist_util.setup_dist()
     logger.configure()
 
