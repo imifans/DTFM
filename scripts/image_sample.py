@@ -22,7 +22,9 @@ from improved_diffusion.script_util import (
 
 def main():
     args = create_argparser().parse_args()
-    dist_util.device_init("cuda:0")
+    dist_util.device_init("cuda:0")  # 初始化设备为 cuda:1
+    logger.configure(abs_log_path = "/home/2021/hexin/XJ2/Log")
+    
     dist_util.setup_dist()
     logger.configure()
 
@@ -91,8 +93,8 @@ def main():
 def create_argparser():
     defaults = dict(
         clip_denoised=True,
-        num_samples=16,
-        batch_size=4,
+        num_samples=64,
+        batch_size=16,
         use_ddim=False,
         model_path="",
     )

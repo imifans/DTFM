@@ -3,7 +3,7 @@ from PIL import Image
 import os
 
 # 加载 .npz 文件
-data = np.load('/home/2021/hexin/XJ2/Log/samples_16x256x256x3.npz')
+data = np.load('/tmp/openai-2024-07-28-23-22-26-120282/samples_64x256x256x3.npz')
 
 # 访问数组
 array1 = data['arr_0']

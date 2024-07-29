@@ -18,9 +18,10 @@ from improved_diffusion.train_util import TrainLoop
 
 def main():
     args = create_argparser().parse_args()
-    dist_util.device_init("cuda:1")  # 初始化设备为 cuda:1
-    dist_util.setup_dist()
+    dist_util.device_init("cuda:0")  # 初始化设备为 cuda:1
     logger.configure(abs_log_path = "/home/2021/hexin/XJ2/Log")
+
+    dist_util.setup_dist()
     logger.log("args: %s", vars(args))
     logger.log("creating model and diffusion...")
     model, diffusion = create_model_and_diffusion(
